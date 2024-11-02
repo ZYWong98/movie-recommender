@@ -4,7 +4,7 @@
 * (overview or genre+keywords) to do our Content-based filtering system
 	* add final row to dataset describing what kind of movies user wants (make sure all fields have input, are preprocessed)
  
-*for overview recommendation
+* for overview recommendation
 	* use TFIDFVectorizer from scikit-learn to fit, transform overview column (make sure everything is preprocessed)
 	* use liner_kernel() to compute cosine similarity (find similarities between 2 movies)
 	* create reverse of indices and map movie titles (map title as index)
