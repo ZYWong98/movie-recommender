@@ -1,3 +1,16 @@
+"""
+Objective for overview recommendation
+    use TFIDFVectorizer from scikit-learn to fit, transform overview column (make sure everything is preprocessed)
+    use liner_kernel() to compute cosine similarity (find similarities between 2 movies)
+    create reverse of indices and map movie titles (map title as index)
+    make recommendation function
+        -- get movie index
+        -- get similarity score of movies linked to that movie
+        -- sort movies by similarity score
+        -- filter top 10 movies based on score
+        -- get movie indices and return top 10 movies
+"""
+
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
