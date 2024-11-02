@@ -22,3 +22,11 @@ for genre+keyword recommendation
 5. use cosine similarity function to calculate score (fit count matrix twice)
 6. create reverse of indices and map movie titles (map title as index)
 7. make recommendation function (same function as above but replace consine similarity matrix)
+
+
+
+![Screenshot 2024-11-02 at 10 43 20 AM](https://github.com/user-attachments/assets/f6615393-9556-47bc-ac50-231b4b9be581)
+
+![Screenshot 2024-11-02 at 10 42 56 AM](https://github.com/user-attachments/assets/99b5123e-07f9-454b-9c9f-b0063e30be1b)
+
+
