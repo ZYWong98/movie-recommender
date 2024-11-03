@@ -33,7 +33,16 @@
 ## Step 5 : Evaluation and Analysis : 11/11/2024
 
 * Objectives:
-	* x
+	* Relevance and Accuracy of Recommendations
+		* Precision: Evaluate the proportion of recommended movies that are relevant to the user. You can measure this by checking if the top recommendations are indeed similar to the user’s preferred genre and keywords.
+		* User Testing: Gather feedback from users on the recommendations, especially in terms of relevance to the user’s interests. Ask users to rate the similarity of recommended movies to their original preferences.
+		* Recall: Check how well the system retrieves all relevant movies, particularly for niche genres or unique keyword combinations.
+	* A/B Testing of Similarity Models
+		* Alternative Models: Try using different similarity metrics (like Jaccard similarity for categorical data) or model configurations, then conduct A/B testing to compare results with the cosine similarity approach. This comparison can reveal which model yields the most relevant recommendations.
+	 * Impact of Metadata Soup Design
+		* Feature Importance: Evaluate how well the “metadata soup” (combined genre and keywords) captures meaningful information. You could compare results using different metadata, such as testing genre-only or keyword-only recommendations to see how each contributes to the final recommendations.
+	 * Quality of Similarity Scores
+		* Threshold Testing: Experiment with different cosine similarity thresholds to see if certain cut-offs yield more accurate or relevant recommendations.
 
 <br />
 
