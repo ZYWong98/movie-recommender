@@ -5,8 +5,8 @@
 * Importance of Each Step
 
 	1.	Dataset Preparation:
-	•	Final Row Addition: A new row is added to the dataset with the type of movies the user is interested in, fully populated and preprocessed to align with the rest of the dataset. This row represents the user’s preferences and serves as a reference point for recommendations.
-	•	Importance: Adding this row allows us to use the user’s preferences as a basis for identifying similar movies, ensuring that recommendations are tailored to the user’s tastes.
+		* Final Row Addition: A new row is added to the dataset with the type of movies the user is interested in, fully populated and preprocessed to align with the rest of the dataset. This row represents the user’s preferences and serves as a reference point for recommendations.
+		* Importance: Adding this row allows us to use the user’s preferences as a basis for identifying similar movies, ensuring that recommendations are tailored to the user’s tastes.
 	2.	Text Preprocessing and Vectorization:
 	•	TFIDFVectorizer (Scikit-Learn): The TF-IDF (Term Frequency-Inverse Document Frequency) Vectorizer is applied to the overview column of the dataset to transform text data into numerical vectors based on word relevance.
 	•	Importance: This step quantifies each movie’s overview, converting descriptions into vectorized forms that can be mathematically compared for similarity. It’s essential for generating accurate recommendations based on textual content.
