@@ -70,7 +70,7 @@ def get_recommendations(title, cosine_sim=cosine_sim):
 
 # Usage
 # To get recommendations for a specific movie:
-recommendations = get_recommendations("Movie Title")
+recommendations = get_recommendations("The Godfather")
 print(recommendations)
 
 
