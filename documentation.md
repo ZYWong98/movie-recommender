@@ -1,8 +1,11 @@
 * Model Design and implementation and training
 
-* This project involves building a content-based filtering recommendation system for movies, specifically designed to recommend movies to users based on the similarity of movie descriptions (overviews) to a user’s preferences. The system uses natural language processing (NLP) and cosine similarity to analyze and compare movie descriptions, allowing us to recommend movies with similar themes, genres, or content.
+* Two Recommendation
+** Overview Recommendation
+** Genre and Keyword Recommendation 
 
 * Overview Recommendation
+* This project involves building a content-based filtering recommendation system for movies, specifically designed to recommend movies to users based on the similarity of movie descriptions (overviews) to a user’s preferences. The system uses natural language processing (NLP) and cosine similarity to analyze and compare movie descriptions, allowing us to recommend movies with similar themes, genres, or content.
 
 	1.	Dataset Preparation:
 		* Removing Stopwords : Any remaining stopwords are removed
