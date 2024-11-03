@@ -1,6 +1,10 @@
 # movie-recommender
 
-* Model Design and implementation and training - Due November 4th
+![Screenshot 2024-11-02 at 10 43 20 AM](https://github.com/user-attachments/assets/f6615393-9556-47bc-ac50-231b4b9be581)
+
+![Screenshot 2024-11-02 at 10 42 56 AM](https://github.com/user-attachments/assets/99b5123e-07f9-454b-9c9f-b0063e30be1b)
+
+## Step 4 :  Model Design and implementation and training - Due November 4th
   
 	* (overview or genre+keywords) to do our Content-based filtering system
 		* add final row to dataset describing what kind of movies user wants (make sure all fields have input, are preprocessed)
@@ -23,15 +27,31 @@
 		* use cosine similarity function to calculate score (fit count matrix twice)
 		* create reverse of indices and map movie titles (map title as index)
 		* make recommendation function (same function as above but replace consine similarity matrix)
- 
+
+< br/>
+
+## Step 5 : Evaluation and Analysis : 11/11/2024
+
+* Objectives:
+*	x
+
+< br/>
+
+## Step 6 : Finalization and Deployment : 11/18/2024
+
+* Objectives:
+*	x
+*	
+
+< br/>
+
+## Step 7 : Presentation and Report : 11/25/2024
+
+* Objectives:
+*	x
+*	
+< br/>
 
 
-
-
-
-
-![Screenshot 2024-11-02 at 10 43 20 AM](https://github.com/user-attachments/assets/f6615393-9556-47bc-ac50-231b4b9be581)
-
-![Screenshot 2024-11-02 at 10 42 56 AM](https://github.com/user-attachments/assets/99b5123e-07f9-454b-9c9f-b0063e30be1b)
 
 
