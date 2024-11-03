@@ -28,29 +28,28 @@
 		* create reverse of indices and map movie titles (map title as index)
 		* make recommendation function (same function as above but replace consine similarity matrix)
 
-< br/>
+<br />
 
 ## Step 5 : Evaluation and Analysis : 11/11/2024
 
 * Objectives:
-*	x
+	* x
 
-< br/>
+<br />
 
 ## Step 6 : Finalization and Deployment : 11/18/2024
 
 * Objectives:
-*	x
-*	
+	* x	
 
-< br/>
+<br />
 
 ## Step 7 : Presentation and Report : 11/25/2024
 
 * Objectives:
-*	x
-*	
-< br/>
+	* x
+ 
+<br />
 
 
 
