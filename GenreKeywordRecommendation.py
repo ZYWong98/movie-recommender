@@ -24,13 +24,22 @@ def clean_data(x):
     else:
         return ''
 
-df['genre'] = df['genre'].apply(clean_data)
+# Load the CSV file
+df = pd.read_csv("Movie_data_Preprocessed.csv", encoding_errors="replace")  # Replace with the path to your file
+
+df['genre names'] = df['genre names'].apply(clean_data)
 df['keywords'] = df['keywords'].apply(clean_data)
+
+#Fill cells with NaN value with whitespace
+df=df.fillna('')
 
 # Create ‘Metadata Soup’
 # Combine genre and keywords columns into a single “metadata soup.”
 
-df['metadata_soup'] = df['genre'] + ' ' + df['keywords']
+df['metadata_soup'] = df['genre names'] + ' ' + df['keywords']
+
+#Drop rows that have no value in metadata soup
+df = df[df['metadata_soup']!=" "]
 
 # Use CountVectorizer to Fit Metadata Soup
 # Initialize and fit CountVectorizer on the combined metadata.
@@ -45,7 +54,7 @@ cosine_sim = cosine_similarity(count_matrix, count_matrix)
 
 # Create Reverse Mapping of Indices
 # Create a dictionary to map movie titles to their indices.
-indices = pd.Series(df.index, index=df['title']).drop_duplicates()
+indices = pd.Series(df.index, index=df['original_title']).drop_duplicates()
 
 # Build Recommendation Function
 # Define a recommendation function that uses the cosine similarity matrix.
@@ -65,12 +74,12 @@ def get_recommendations(title, cosine_sim=cosine_sim):
     movie_indices = [i[0] for i in sim_scores]
     
     # Return the top 10 most similar movies
-    return df['title'].iloc[movie_indices]
+    return df['original_title'].iloc[movie_indices]
 
 
 # Usage
 # To get recommendations for a specific movie:
-recommendations = get_recommendations("The Godfather")
+recommendations = get_recommendations("star wars")
 print(recommendations)
 
 

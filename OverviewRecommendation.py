@@ -16,7 +16,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
 # Load the CSV file
-df = pd.read_csv("movieData.csv")  # Replace with the path to your file
+df = pd.read_csv("Movie_data_Preprocessed.csv", encoding_errors="replace")  # Replace with the path to your file
 
 # Ensure there are no null values in the overview column, and fill if necessary
 df['overview'] = df['overview'].fillna('')
@@ -29,7 +29,7 @@ tfidf_matrix = tfidf.fit_transform(df['overview'])
 cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 
 # Create a reverse map of indices and movie titles
-indices = pd.Series(df.index, index=df['title']).drop_duplicates()
+indices = pd.Series(df.index, index=df['original_title']).drop_duplicates()
 
 # Recommendation function
 def get_recommendations(title, cosine_sim=cosine_sim):
@@ -49,8 +49,8 @@ def get_recommendations(title, cosine_sim=cosine_sim):
     movie_indices = [i[0] for i in sim_scores]
 
     # Return the top 10 most similar movies
-    return df['title'].iloc[movie_indices]
+    return df['original_title'].iloc[movie_indices]
 
 
 # Example usage
-print(get_recommendations("The Godfather"))  # Replace with a title in your dataset
+print(get_recommendations("the godfather"))  # Replace with a title in your dataset
