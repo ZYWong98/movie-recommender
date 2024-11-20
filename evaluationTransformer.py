@@ -1,6 +1,10 @@
-from sklearn.metrics import precision_score, recall_score
-
-def compute_recall_precision(embeddings, titles, movie_index, ground_truth, top_k=5):
+def compute_recall_precision_for_star_wars(embeddings, titles, movie_title, ground_truth, top_k=5):
+    # Find the index of the movie "Star Wars"
+    try:
+        movie_index = titles.index(movie_title)
+    except ValueError:
+        raise ValueError(f"'{movie_title}' not found in the dataset.")
+    
     # Get recommendations
     similarity = cosine_similarity(embeddings[movie_index].reshape(1, -1), embeddings)
     similar_indices = similarity[0].argsort()[-top_k-1:][::-1]
@@ -17,8 +21,7 @@ def compute_recall_precision(embeddings, titles, movie_index, ground_truth, top_
     
     return precision, recall, recommendations
 
-# Example usage
-def main_with_metrics(file_path):
+def main_with_star_wars_metrics(file_path):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     # Load pre-trained BERT model and tokenizer
@@ -29,17 +32,23 @@ def main_with_metrics(file_path):
     data = load_data(file_path)
     embeddings, titles = generate_embeddings(data, bert_model, tokenizer, device)
     
-    # Ground truth for evaluation (example: list of expected relevant movies for a title)
-    movie_index = 0  # Example input movie index
-    ground_truth = [" star wars: episode iii - revenge of the sith", "the empire strikes back", "return of the jedi"]  # Replace with actual ground truth
+    # Ground truth for Star Wars (example, replace with curated list or actual user data)
+    ground_truth = [
+        "The Empire Strikes Back",
+        "Return of the Jedi",
+        "Rogue One: A Star Wars Story",
+        "The Force Awakens",
+        "A New Hope"
+    ]
     
-    # Compute metrics
-    precision, recall, recommendations = compute_recall_precision(embeddings, titles, movie_index, ground_truth)
+    # Compute metrics for "Star Wars"
+    movie_title = "Star Wars"
+    precision, recall, recommendations = compute_recall_precision_for_star_wars(embeddings, titles, movie_title, ground_truth)
     
-    print(f"Recommendations for '{titles[movie_index]}': {recommendations}")
+    print(f"Recommendations for '{movie_title}': {recommendations}")
     print(f"Precision: {precision:.2f}")
     print(f"Recall: {recall:.2f}")
 
 # Run the evaluation
 file_path = "movies.csv"  # Replace with your actual file path
-main_with_metrics(file_path)
+main_with_star_wars_metrics(file_path)
