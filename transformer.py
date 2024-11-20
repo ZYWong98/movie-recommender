@@ -1,66 +1,77 @@
 import torch
 import torch.nn as nn
-import torch.optim as optim
+from transformers import BertTokenizer, BertModel
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 
+# Define the Transformer for movie recommendations
 class MovieRecommenderTransformer(nn.Module):
-    def __init__(self, num_users, num_movies, embed_dim, num_heads, num_layers, ff_dim, dropout=0.1):
+    def __init__(self, embed_dim, num_heads, num_layers, ff_dim, dropout=0.1):
         super(MovieRecommenderTransformer, self).__init__()
         
-        # Embeddings for users and movies
-        self.user_embedding = nn.Embedding(num_users, embed_dim)
-        self.movie_embedding = nn.Embedding(num_movies, embed_dim)
-        
-        # Transformer layers
+        # Transformer Encoder
         transformer_layer = nn.TransformerEncoderLayer(
-            d_model=embed_dim, 
-            nhead=num_heads, 
-            dim_feedforward=ff_dim, 
+            d_model=embed_dim,
+            nhead=num_heads,
+            dim_feedforward=ff_dim,
             dropout=dropout
         )
         self.transformer = nn.TransformerEncoder(transformer_layer, num_layers)
-        
-        # Output layer
-        self.output_layer = nn.Linear(embed_dim, num_movies)
-        
-    def forward(self, user_ids, movie_ids):
-        # Embed users and movies
-        user_embed = self.user_embedding(user_ids)
-        movie_embed = self.movie_embedding(movie_ids)
-        
-        # Concatenate and reshape for the transformer
-        x = torch.cat((user_embed.unsqueeze(1), movie_embed), dim=1)  # [batch_size, seq_len, embed_dim]
-        x = x.permute(1, 0, 2)  # Transformer expects [seq_len, batch_size, embed_dim]
-        
-        # Pass through the transformer
-        x = self.transformer(x)
-        
-        # Take the output corresponding to the user representation
-        user_output = x[0]  # [batch_size, embed_dim]
-        
-        # Predict scores for all movies
-        scores = self.output_layer(user_output)
-        
-        return scores
+    
+    def forward(self, embeddings):
+        # Transformer expects input [seq_len, batch_size, embed_dim]
+        x = embeddings.permute(1, 0, 2)
+        output = self.transformer(x)
+        return output.permute(1, 0, 2)  # Convert back to [batch_size, seq_len, embed_dim]
 
-# Example usage
-num_users = 1000
-num_movies = 5000
-embed_dim = 128
-num_heads = 4
-num_layers = 2
-ff_dim = 256
+# Load and preprocess data
+def load_data(file_path):
+    data = pd.read_csv(file_path)
+    return data
 
-model = MovieRecommenderTransformer(num_users, num_movies, embed_dim, num_heads, num_layers, ff_dim)
+# Generate embeddings using BERT
+def generate_embeddings(data, model, tokenizer, device):
+    titles = data['title'].tolist()
+    overviews = data['overview'].tolist()
+    
+    embeddings = []
+    for overview in overviews:
+        inputs = tokenizer(overview, return_tensors="pt", truncation=True, padding=True, max_length=128).to(device)
+        with torch.no_grad():
+            outputs = model(**inputs)
+            embeddings.append(outputs.last_hidden_state[:, 0, :].cpu().numpy())  # CLS token embedding
+    return torch.tensor(embeddings).squeeze(1), titles
 
-# Dummy data
-batch_size = 32
-user_ids = torch.randint(0, num_users, (batch_size,))
-movie_ids = torch.randint(0, num_movies, (batch_size, 10))  # 10 movies per user
+# Recommend movies based on similarity
+def recommend_movies(embeddings, titles, movie_index, top_k=5):
+    similarity = cosine_similarity(embeddings[movie_index].reshape(1, -1), embeddings)
+    similar_indices = similarity[0].argsort()[-top_k-1:][::-1]  # Exclude the input movie itself
+    return [titles[i] for i in similar_indices if i != movie_index][:top_k]
 
-# Forward pass
-scores = model(user_ids, movie_ids)
+# Main function
+def main(file_path):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
+    # Load pre-trained BERT model and tokenizer
+    tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+    bert_model = BertModel.from_pretrained("bert-base-uncased").to(device)
+    
+    # Load and preprocess data
+    data = load_data(file_path)
+    embeddings, titles = generate_embeddings(data, bert_model, tokenizer, device)
+    
+    # Initialize Transformer model
+    embed_dim = embeddings.shape[1]
+    model = MovieRecommenderTransformer(embed_dim, num_heads=4, num_layers=2, ff_dim=256).to(device)
+    
+    # Example: Recommend movies for the first entry
+    movie_index = 0  # Change as needed
+    recommendations = recommend_movies(embeddings, titles, movie_index)
+    
+    print(f"Recommendations for '{titles[movie_index]}':")
+    for rec in recommendations:
+        print(f"- {rec}")
 
-# Recommended movie indices for each user
-recommendations = torch.argmax(scores, dim=1)
-
-print("Recommended movies:", recommendations)
+# Run the script with your file
+file_path = "movies.csv"  # Replace with your actual file path
+main(file_path)
